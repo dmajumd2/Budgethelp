@@ -18,20 +18,44 @@ var budgetController = (function() {
 
 
 //UI Controller
-var UIController = function(){
+var UIController = (function(){
 	
+	var domStrings = {
+		inputType: '.add__type',
+		inputDescription: '.add__description',
+		inputValue: '.add__value',
+		button: '.add__btn'
+	};
 	
+	return {
+		
+		getInput: function(){
+			return {
+					type: document.querySelector(domStrings.inputType).value,
+					description: document.querySelector(domStrings.inputDescription).value,
+					value: document.querySelector(domStrings.inputValue).value
+				};
+			},
+		
+			getdomStrings: function(){
+				return domStrings;
+			}
+		
+		};
 	
-}();
+	})();
 
 //GLobal app controller
-var controller = function(budCtrl, UICtrl){
+var controller = (function(budCtrl, UICtrl){
 	
+	var dom = UIController.getdomStrings();
 	
 	// function for below event listner
 	var ctrlAddItem = function() {
 		
 		//1. Get the field input Data
+		var input = UIController.getInput();
+		console.log(input);
 		
 		//2. Add the item to the budget controller
 		
@@ -41,12 +65,10 @@ var controller = function(budCtrl, UICtrl){
 		
 		//5. Display the budget to UI
 		
-		console.log('Working');
-		
 	}
 	
 	// event listner for button click for tick mark
-	document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+	document.querySelector(dom.button).addEventListener('click', ctrlAddItem);
 	
 	
 	// event listner for enter key word
@@ -58,4 +80,4 @@ var controller = function(budCtrl, UICtrl){
 	});
 	
 	
-}(budgetController, UIController);
+})(budgetController, UIController);
