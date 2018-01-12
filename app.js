@@ -48,7 +48,23 @@ var UIController = (function(){
 //GLobal app controller
 var controller = (function(budCtrl, UICtrl){
 	
-	var dom = UIController.getdomStrings();
+	
+	var setEvent =  function(){
+		
+		var dom = UIController.getdomStrings();
+		
+		// event listner for button click for tick mark
+		document.querySelector(dom.button).addEventListener('click', ctrlAddItem);
+	
+	
+		// event listner for enter key word
+		document.addEventListener('keypress', function(event){
+			if(event.keyCode === 13 || event.which === 13){
+				ctrlAddItem();
+			}
+		});
+	};
+	
 	
 	// function for below event listner
 	var ctrlAddItem = function() {
@@ -65,19 +81,17 @@ var controller = (function(budCtrl, UICtrl){
 		
 		//5. Display the budget to UI
 		
-	}
+	};
 	
-	// event listner for button click for tick mark
-	document.querySelector(dom.button).addEventListener('click', ctrlAddItem);
-	
-	
-	// event listner for enter key word
-	document.addEventListener('keypress', function(event){
-		
-		if(event.keyCode === 13 || event.which === 13){
-			ctrlAddItem();
+	return {
+		init: function(){
+			console.log('App has started');
+			setEvent();
 		}
-	});
+	};
 	
 	
 })(budgetController, UIController);
+
+
+controller.init();
