@@ -1,16 +1,16 @@
 
-//Budget Controller
+//BUDGET CONTROLLER
 var budgetController = (function() {
 	
-	var Expense = function(type, description, val){
-			this.type = type;
-			this.description = type;
+	var Expense = function(id, description, val){
+			this.id = id;
+			this.description = description;
 			this.val = val;
 	};
 	
-	var Income = function(type, description, val){
-			this.type = type;
-			this.description = type;
+	var Income = function(id, description, val){
+			this.id = id;
+			this.description = description;
 			this.val = val;
 	};
 	
@@ -27,12 +27,51 @@ var budgetController = (function() {
 		}
 	}
 	
-	
+	return {
+		addItem: function(type, des, val) {
+			var newItem, ID;
+			
+			
+			
+			//CREATE NEW ID
+			if(data.allItems[type].length < 0){
+			ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+			} else {
+				ID = 0;
+			}
+			
+			
+			
+			
+			// Create new item based on 'inc' or 'exp' type
+			if(type === 'exp'){
+				newItem = new Expense(ID, des, val);
+			} else if(type === 'inc') {
+				newItem = new Income(ID, des, val);
+			}
+			
+			
+			
+			// Push it into array data structure according to the type
+			data.allItems[type].push(newItem);
+			
+			//Return the new element
+			return newItem;
+			
+		},
+		
+		testing : function(){
+			console.log(data);
+		}
+	};
 	
 })();
 
 
-//UI Controller
+
+
+
+//UI CONTROLLER
 var UIController = (function(){
 	
 	var domStrings = {
@@ -60,7 +99,10 @@ var UIController = (function(){
 	
 	})();
 
-//GLobal app controller
+
+
+
+//GLOBAL APP CONTROLLER
 var controller = (function(budCtrl, UICtrl){
 	
 	
@@ -83,12 +125,12 @@ var controller = (function(budCtrl, UICtrl){
 	
 	// function for below event listner
 	var ctrlAddItem = function() {
-		
+		var input, newItem;
 		//1. Get the field input Data
-		var input = UIController.getInput();
-		//console.log(input);
+		input = UIController.getInput();
 		
 		//2. Add the item to the budget controller
+		newItem = budCtrl.addItem(input.type, input.description, input.value);
 		
 		//3. Add the item to the UI
 		
@@ -109,4 +151,6 @@ var controller = (function(budCtrl, UICtrl){
 })(budgetController, UIController);
 
 
-//controller.init();
+
+
+controller.init();
