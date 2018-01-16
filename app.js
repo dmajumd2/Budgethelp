@@ -117,7 +117,8 @@ var UIController = (function(){
 		budget: '.budget__value',
 		totalIncome: '.budget__income--value',
 		totalExpenses: '.budget__expenses--value',
-		percentage: '.budget__expenses--percentage'
+		percentage: '.budget__expenses--percentage',
+		container: '.container'
 	};
 	
 	// for getting the input from the user like (-) or (+), add description and value or the cost
@@ -138,10 +139,10 @@ var UIController = (function(){
 			// Create HTML string with placeholder text
 			if(type === 'inc'){
 				element = domStrings.incomeContainer;
-			html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+			html = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
 			} else if(type === 'exp') {
 				element = domStrings.expensesContainer;
-			html =  '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+			html =  '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
 			}
 			
 			// Replace the placeholder text with some actual data
@@ -216,6 +217,9 @@ var controller = (function(budCtrl, UICtrl){
 				ctrlAddItem();
 			}
 		});
+		
+		// event happen each time when someone clicks on this container
+		document.querySelector(dom.container).addEventListener('click', ctrlDeleteItem);
 	};
 	
 	
@@ -254,9 +258,30 @@ var controller = (function(budCtrl, UICtrl){
 			//5. Calculate and update budget
 			updateBudget();
 		}
-		
-		
 	};
+	
+	
+	var ctrlDeleteItem = function(event){
+		var itemID, splitID, type, id;
+		
+		itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+		
+		if(itemID){
+			
+			//inc-1
+			splitID = itemID.split('-');
+			type = splitID[0];
+			id = splitID[1];
+			
+			//1. delete the itme from data structure
+			
+			//2. delete the item from UI
+			
+			//3. update and show the new budget
+			
+		}
+	};
+	
 	
 	return {
 		init: function(){
@@ -273,8 +298,6 @@ var controller = (function(budCtrl, UICtrl){
 	
 	
 })(budgetController, UIController);
-
-
 
 
 controller.init();
