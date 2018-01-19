@@ -165,7 +165,8 @@ var UIController = (function(){
 		totalIncome: '.budget__income--value',
 		totalExpenses: '.budget__expenses--value',
 		percentage: '.budget__expenses--percentage',
-		container: '.container'
+		container: '.container',
+		itemPercentages: '.item__percentage'
 	};
 	
 	// for getting the input from the user like (-) or (+), add description and value or the cost
@@ -239,6 +240,26 @@ var UIController = (function(){
 			}
 		},
 			
+		
+	// function to display the expenses percentages in UI
+		displayPercentages: function(percentages){
+			var fields = document.querySelectorAll(domStrings.itemPercentages);
+			var nodeListForEach =  function(list, callback){
+				for(var i = 0; i< list.length; i++){
+					callback(list[i], i);
+				}
+			};
+			
+			nodeListForEach(fields, function(current, index){
+				if(percentages[index] > 0) {
+				current.textContent = percentages[index] + '%';
+				} else {
+					current.textContent = '---';
+				}
+			});
+		},
+		
+		
 	// function to return the type, description and value to the global app controller
 			getdomStrings: function(){
 				return domStrings;
@@ -296,7 +317,7 @@ var controller = (function(budCtrl, UICtrl){
 		var percentages = budCtrl.getPercentages();
 		
 		//3. Update the UI with new percentages
-		console.log(percentages);
+		UICtrl.displayPercentages(percentages);
 	};
 	
 	
