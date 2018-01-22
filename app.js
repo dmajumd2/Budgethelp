@@ -191,6 +191,12 @@ var UIController = (function(){
 		return(type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
 	};
 			
+	var nodeListForEach =  function(list, callback){
+				for(var i = 0; i< list.length; i++){
+					callback(list[i], i);
+				}
+			};
+	
 	// for getting the input from the user like (-) or (+), add description and value or the cost
 	return {
 		getInput: function(){
@@ -269,11 +275,7 @@ var UIController = (function(){
 	// function to display the expenses percentages in UI
 		displayPercentages: function(percentages){
 			var fields = document.querySelectorAll(domStrings.itemPercentages);
-			var nodeListForEach =  function(list, callback){
-				for(var i = 0; i< list.length; i++){
-					callback(list[i], i);
-				}
-			};
+			
 			
 			nodeListForEach(fields, function(current, index){
 				if(percentages[index] > 0) {
@@ -294,6 +296,21 @@ var UIController = (function(){
 			document.querySelector(domStrings.dateLable).textContent = months[month] + ' ' + year;
 		
 		},
+		
+	//function to change the color of expenses and income
+		changedType: function(){
+			var fields = document.querySelectorAll(
+			domStrings.inputType + ',' +
+			domStrings.inputDescription + ',' +
+			domStrings.inputValue);
+			 
+			nodeListForEach(fields, function(cur){
+				cur.classList.toggle('red-focus');
+			});
+			
+			document.querySelector(domStrings.button).classList.toggle('red');
+		},
+		
 		
 	// function to return the type, description and value to the global app controller
 			getdomStrings: function(){
@@ -329,6 +346,8 @@ var controller = (function(budCtrl, UICtrl){
 		
 		// event happen each time when someone clicks on this container
 		document.querySelector(dom.container).addEventListener('click', ctrlDeleteItem);
+		
+		document.querySelector(dom.inputType).addEventListener('change', UICtrl.changedType);
 	};
 	
 	
