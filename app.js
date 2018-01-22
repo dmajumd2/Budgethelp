@@ -166,7 +166,8 @@ var UIController = (function(){
 		totalExpenses: '.budget__expenses--value',
 		percentage: '.budget__expenses--percentage',
 		container: '.container',
-		itemPercentages: '.item__percentage'
+		itemPercentages: '.item__percentage',
+		dateLable: '.budget__title--month'
 	};
 	
 	
@@ -283,6 +284,16 @@ var UIController = (function(){
 			});
 		},
 		
+	// function to display the current date in UI
+		displayDate: function(){
+			var now, year, month, months;
+			now =  new Date();
+			months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+			month = now.getMonth();
+			year = now.getFullYear();
+			document.querySelector(domStrings.dateLable).textContent = months[month] + ' ' + year;
+		
+		},
 		
 	// function to return the type, description and value to the global app controller
 			getdomStrings: function(){
@@ -403,6 +414,7 @@ var controller = (function(budCtrl, UICtrl){
 	return {
 		init: function(){
 			console.log('App has started');
+			UICtrl.displayDate();   // calling display date during the initialization of the web app
 			UICtrl.displayToUI({
 				budget: 0,
 				totalInc: 0,
