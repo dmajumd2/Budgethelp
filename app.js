@@ -169,6 +169,27 @@ var UIController = (function(){
 		itemPercentages: '.item__percentage'
 	};
 	
+	
+	
+	var formatNumber = function(num, type){
+			
+		var numSplit, int, dec;
+		
+		num =  Math.abs(num);
+		num = num.toFixed(2);
+		
+		numSplit = num.split('.');
+		int = numSplit[0];
+		
+		if(int.length > 3){
+			int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+		}
+		
+		dec = numSplit[1];
+		
+		return(type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
+	};
+			
 	// for getting the input from the user like (-) or (+), add description and value or the cost
 	return {
 		getInput: function(){
@@ -196,7 +217,7 @@ var UIController = (function(){
 			// Replace the placeholder text with some actual data
 			newHTML = html.replace('%id%', obj.id);
 			newHTML = newHTML.replace('%description%', obj.description);
-			newHTML = newHTML.replace('%value%', obj.value);
+			newHTML = newHTML.replace('%value%', formatNumber(obj.value, type));
 			//console.log(newHTML);
 			
 			// Insert the HTML into the DOM
@@ -228,10 +249,13 @@ var UIController = (function(){
 		
 	//function to display the budget, income, expenses and percentage to the UI	
 		displayToUI: function(obj){
+			var type;
 			
-			document.querySelector(domStrings.budget).textContent = obj.budget;
-			document.querySelector(domStrings.totalIncome).textContent = obj.totalInc;
-			document.querySelector(domStrings.totalExpenses).textContent = obj.totalExp;
+			obj.budget > 0 ? type = 'inc' : type = 'exp';
+			
+			document.querySelector(domStrings.budget).textContent = formatNumber(obj.budget, type);
+			document.querySelector(domStrings.totalIncome).textContent = formatNumber(obj.totalInc, 'inc');
+			document.querySelector(domStrings.totalExpenses).textContent = formatNumber(obj.totalExp, 'exp');
 			
 			if(obj.percentage > 0){
 				document.querySelector(domStrings.percentage).textContent = obj.percentage + '%';
